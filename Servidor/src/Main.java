@@ -1,13 +1,44 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    IO.println(String.format("Hello and welcome!"));
+import java.io.*;
+import java.net.*;
 
-    for (int i = 1; i <= 5; i++) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        IO.println("i = " + i);
+void main() {
+    int puerto = 5000;
+
+    try (ServerSocket servidor = new ServerSocket(puerto)) {
+        System.out.println("--- Servidor Multicliente esperando conexiones en el puerto " + puerto + " ---");
+
+        while (true) {
+            Socket socketCliente = servidor.accept();
+            System.out.println("Nuevo cliente conectado desde: " + socketCliente.getInetAddress());
+            Thread hilo = new Thread(new ClienteManager(socketCliente));
+            hilo.start();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+class ClienteManager implements Runnable {
+    private Socket socket;
+
+    public ClienteManager(Socket socket) {
+        this.socket = socket;
+    }
+
+    @Override
+    public void run() {
+        try {
+
+            BufferedReader entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String mensaje = entrada.readLine();
+            System.out.println("Mensaje recibido: " + mensaje);
+
+            PrintWriter salida = new PrintWriter(socket.getOutputStream(), true);
+            salida.println("Hola desde el servidor multicliente. Has sido atendido con éxito.");
+
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
