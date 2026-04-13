@@ -15,26 +15,35 @@ public class Client {
             PrintWriter sortida = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            String missatge;
-            String resposta;
-
+            String missatge = "";
+            String resposta = "";
+            boolean kword = false;
             while(true){
-                System.out.println("Tu: ");
+                System.out.println("Client: ");
                 missatge = scan.nextLine();
-                sortida.println(missatge);
-                System.out.println("Enviant missatge... Ok");
-
-                if(missatge.equalsIgnoreCase(paraulaClau)){
+                if (missatge.equalsIgnoreCase(paraulaClau)){
+                    System.out.println("Client keyword detected");
+                    sortida.println("Client keyword detected");
                     break;
                 }
-
+                else {
+                    sortida.println(missatge);
+                }
                 resposta = entrada.readLine();
-                System.out.println("Servidor: " + resposta);
 
-                if (resposta.equalsIgnoreCase(paraulaClau)){
+                if (resposta == null || resposta.equals("Server keyword detected")){
+                    System.out.println("Server keyword detected");
                     break;
                 }
 
+                if(resposta.equalsIgnoreCase(paraulaClau)){
+                    sortida.println("Client keyword detected");
+                    System.out.println("Client keyword detected");
+                    break;
+                }
+                else {
+                    System.out.println("Servidor: " + resposta);
+                }
             }
             System.out.println("Tancant client... Ok");
             scan.close();
