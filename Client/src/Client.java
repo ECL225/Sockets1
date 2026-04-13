@@ -21,22 +21,22 @@ public class Client {
             while(true){
                 System.out.println("Client: ");
                 missatge = scan.nextLine();
-                if (missatge.equalsIgnoreCase(paraulaClau)){
+                if (missatge.equalsIgnoreCase(paraulaClau)){ // comprobes que no ha escrit la keyword
                     System.out.println("Client keyword detected");
                     sortida.println("Client keyword detected");
                     break;
                 }
-                else {
+                else {// envies el missatge
                     sortida.println(missatge);
                 }
                 resposta = entrada.readLine();
 
-                if (resposta == null || resposta.equals("Server keyword detected")){
+                if (resposta == null || resposta.equals("Server keyword detected")){ // comprobes que no s'ha tancat la conexio ni s'ha trigerejat la keyword del servidor
                     System.out.println("Server keyword detected");
                     break;
                 }
 
-                if(resposta.equalsIgnoreCase(paraulaClau)){
+                if(resposta.equalsIgnoreCase(paraulaClau)){ // si el missatge que ha arribat no es la keyword del client mostra el missatge
                     sortida.println("Client keyword detected");
                     System.out.println("Client keyword detected");
                     break;

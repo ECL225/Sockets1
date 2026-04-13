@@ -40,25 +40,28 @@ public class Servidor {
                 String missatge;
                 String resposta;
                 while (true) {
-                    resposta = entrada.readLine();
-                    if (resposta.equals("Client keyword detected") || resposta == null){
+                    resposta = entrada.readLine(); // agafes la entrada
+                    if (resposta.equals("Client keyword detected") || resposta == null){ //comprobes que no es null ni la s'ha trigerejat la keyword al client
                         System.out.println("Client keyword detected");
                         break;
                     }
-                    else if (resposta.equalsIgnoreCase(paraulaClau)) {
+                    else if (resposta.equalsIgnoreCase(paraulaClau)) {//comprobe que el missatge no es la keyword del servidor
                         System.out.println("Server keyword detected");
+                        sortida.println("Server keyword detected");
                         break;
                     }
-                    else {
+                    else { // mostres el misatge que ha arribat
                         System.out.println("Client: " + resposta);
                     }
 
                     System.out.println("Servidor: ");
                     missatge = scan.nextLine();
-                    if (missatge.equalsIgnoreCase(paraulaClau)) {
+                    if (missatge.equalsIgnoreCase(paraulaClau)) { // comprobes que no s'ha escrit la keyword
                         System.out.println("Server keyword detected");
+                        sortida.println("Server keyword detected");
                         break;
                     }
+                    // envies el misatge
                     sortida.println(missatge);
                 }
                 System.out.println("Tancant Server... Ok");
